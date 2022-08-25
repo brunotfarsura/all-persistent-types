@@ -23,7 +23,3 @@ doc/api/
 # Editors
 .idea
 *.iml
-
-# Others
-~/
-
