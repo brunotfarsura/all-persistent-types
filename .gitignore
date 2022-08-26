@@ -23,3 +23,7 @@ doc/api/
 # Editors
 .idea
 *.iml
+
+# Other
+android/~/
+~/
