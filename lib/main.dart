@@ -1,8 +1,13 @@
+import 'package:all_persistent_types/firebase/listCar.dart';
+import 'package:all_persistent_types/nosql/listBook.dart';
 import 'package:all_persistent_types/screens/home.dart';
 import 'package:all_persistent_types/sqlite/listPerson.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,8 +30,9 @@ class MyApp extends StatelessWidget {
       //N routes defined
       routes: {
         "/":(context) => const Home(),
-        "/person":(context) => const  ListPerson()
-
+        "/person":(context) => const  ListPerson(),
+        "/book":(context) => const ListBook(),
+        "/car":(context) => const ListCar()
       }
     );
   }

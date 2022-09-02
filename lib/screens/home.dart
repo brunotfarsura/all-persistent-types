@@ -28,7 +28,9 @@ class Home extends StatelessWidget {
             title: const Text("Floor"),
             subtitle: const Text("Lista de livros"),
             trailing: const Icon(Icons.navigate_next),
-            //onTap: ,
+            onTap: () {
+              Navigator.pushNamed(context, "/book");
+            },
           ),
           divisorListMain(),
           ListTile(
@@ -36,7 +38,9 @@ class Home extends StatelessWidget {
             title: const Text("Firebase"),
             subtitle: const Text("Lista de carros"),
             trailing: const Icon(Icons.navigate_next),
-            //onTap: ,
+            onTap: () {
+              Navigator.pushNamed(context, "/car"); 
+            }
           ),
           divisorListMain()
         ]
