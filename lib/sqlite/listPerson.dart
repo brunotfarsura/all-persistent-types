@@ -1,5 +1,5 @@
 import 'package:all_persistent_types/sqlite/addPerson.dart';
-import 'package:all_persistent_types/sqlite/daos/personDao.dart';
+import 'package:all_persistent_types/sqlite/daos/personDAO.dart';
 import 'package:all_persistent_types/sqlite/models/person.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +28,26 @@ class _ListPersonState extends State<ListPerson> {
     });
   }
 
+  insertPerson(Person person) async{
+    int id = await PersonDAO().insertPerson(person);
+    if(id > 0){
+      person.id = id;
+      setState(() {
+        persons.add(person);
+      });
+    }
+  }
+
+  deletePerson(int personId) async{
+    Person person = persons[personId];
+    if(person.id != null){
+      await PersonDAO().deletePersonById(person.id!);
+      setState(() {
+        persons.removeAt(personId);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,18 +61,23 @@ class _ListPersonState extends State<ListPerson> {
                 MaterialPageRoute(builder: (context) => AddPerson()))
                 .then((person) => {
                   setState((){
-                    persons.add(person);
+                    insertPerson(person);
                   })
                 });
             })
         ],
         ),
-      body: ListView(children: buildListItems()),
+      body: ListView.separated(
+        itemCount: persons.length,
+        itemBuilder: ((context, index) => buildListItems(index)),
+        separatorBuilder: (context, index) => const Divider(height: 1,)
+        )
     );
   }
 
-  List<Widget> buildListItems(){
-    return persons.map((p) => Padding(
+  Widget buildListItems(int personId){
+    Person person = persons[personId];
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Container(
           decoration: BoxDecoration(
@@ -60,11 +85,14 @@ class _ListPersonState extends State<ListPerson> {
             borderRadius: BorderRadius.circular(5)
           ),
           child: ListTile(
-            leading: Text(p.id != null ? p.id.toString() : "-1"),
-            title: Text(p.firstName),
-            subtitle: Text(p.lastName),
+            leading: Text(person.id != null ? person.id.toString() : "-1"),
+            title: Text(person.firstName),
+            subtitle: Text(person.lastName),
+            onLongPress: (){
+              deletePerson(personId);
+            }
           ),
         ),
-      )).toList();
+      );
   }
 }
